@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Gold Price Forecast</title>
+    <link rel="stylesheet" type="text/css" href="/static/styles.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Gold Price Forecast</h1>
+        <img src="/static/gold.png" alt="Gold" class="gold-img">
+        <video autoplay loop muted class="video-background">
+            <source src="/static/space-background.mp4" type="video/mp4">
+            Your browser does not support the video tag.
+        </video>
+        <form action="/forecast" method="post">
+            <label for="gold_price">ราคาทอง (บาท):</label>
+            <input type="text" id="gold_price" name="gold_price" pattern="[0-9]+" title="กรุณาใส่ตัวเลขเท่านั้น" required>
+            <br><br>
+            <label for="currency">เลือกสกุลเงิน:</label>
+            <select id="currency" name="currency">
+                {% for currency in currencies %}
+                <option value="{{ currency }}">{{ currency }}</option>
+                {% endfor %}
+            </select>
+            <br><br>
+            <input type="submit" value="Process">
+        </form>        
+
+        <!-- ส่วนที่แสดงผลลัพธ์ -->
+        {% if forecast_result is defined %}
+        <div class="forecast-result">
+            <p>ราคาซื้อ {{ currency }} =  {{ forecast_result }}</p>
+            <p>ราคาขาย {{ currency }} =  {{ forecast_sell }}</p>
+        </div>
+        {% endif %}
+
+        <div class="flags">
+            <img src="/static/thailand.png" alt="USA" class="flag">
+            {% if currency == 'ดอลลาร์สหรัฐ' %}
+                <img src="/static/usa.png" alt="USA" class="flag">
+            {% elif currency == 'ปอนด์สเตอร์ลิง' %}
+                <img src="/static/uk.png" alt="UK" class="flag">
+            {% elif currency == 'เยน' %}
+                <img src="/static/japan.webp" alt="Japan" class="flag">
+            {% elif currency == 'หยวน' %}
+                <img src="/static/china.webp" alt="China" class="flag">
+            {% endif %}
+        </div>
+
+    </div>
+</body>
+</html>
